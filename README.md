@@ -3,9 +3,7 @@ Learn Deep Learning with Keras in Baby Steps
 
 Text Book:
 
-Deep Learning with Python  
-
-Francois Chollet
+Deep Learning with Python by Francois Chollet
 
 https://www.manning.com/books/deep-learning-with-python
 
