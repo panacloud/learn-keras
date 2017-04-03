@@ -25,7 +25,7 @@ test_labels = to_categorical(test_labels)
 
 network = Sequential()
 network.add(Dense(10, activation='relu', input_shape=(10,)))
-network.add(Dense(1, activation='softmax'))
+network.add(Dense(2, activation='softmax'))
 
 network.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
 
