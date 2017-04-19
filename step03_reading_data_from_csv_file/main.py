@@ -30,6 +30,10 @@ test_labels = all_test_data[:,0] #slice the first column which are the labels
 test_data = all_test_data[:,np.arange(1,11)]
 #test_labels = to_categorical(test_labels)
 
+all_training_data[np.isnan(all_training_data)] = 0 #convert nan value to zero
+
+#print(all_training_data[6])
+
 csv_predict = csv_predict[1:-1,:] #remove first name row
 csv_predict = csv_predict[:,1:] #remove first index column
 csv_predict = csv_predict[:,1:] #remove empty first column
