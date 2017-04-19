@@ -9,6 +9,8 @@ seed = 7
 np.random.seed(seed)
 
 #http://machinelearningmastery.com/tutorial-first-neural-network-python-keras/
+#http://www.kdnuggets.com/2015/05/machine-learning-wars-amazon-google-bigml-predicsis.html
+#https://mljar.com/blog/machine-learning-wars/
 
 csv_all_data = np.genfromtxt('data/cs-training.csv', delimiter=",")
 csv_predict = np.genfromtxt('data/cs-test.csv', delimiter=",")
@@ -28,6 +30,12 @@ test_labels = all_test_data[:,0] #slice the first column which are the labels
 test_data = all_test_data[:,np.arange(1,11)]
 #test_labels = to_categorical(test_labels)
 
+csv_predict = csv_predict[1:-1,:] #remove first name row
+csv_predict = csv_predict[:,1:] #remove first index column
+csv_predict = csv_predict[:,1:] #remove empty first column
+#print(csv_predict[0])
+
+
 
 network = Sequential()
 network.add(Dense(12, activation='relu', input_dim=10, kernel_initializer='uniform'))
@@ -43,13 +51,16 @@ test_loss, test_acc = network.evaluate(test_data, test_labels)
 
 #SeriousDlqin2yrs,RevolvingUtilizationOfUnsecuredLines,age,NumberOfTime30-59DaysPastDueNotWorse,DebtRatio,MonthlyIncome,NumberOfOpenCreditLinesAndLoans,NumberOfTimes90DaysLate,NumberRealEstateLoansOrLines,NumberOfTime60-89DaysPastDueNotWorse,NumberOfDependents
 
-predictions = network.predict(np.array([[0.76,45,2,0.802982129,9120,13,0,6,0,2],
-                                        [0.2, 30, 0, 0.102982129, 29120, 1, 0, 2, 0, 2],
-                                        [0.880370887, 43, 0, 0.461323764, 7523, 6, 0, 1, 0, 1],
-                                        [0.224710924,55,0,0.057234801,8700,7,0,0,0,0],
-                                        [1.135552064,41,2,0.845887215,7500,12,0,4,1,0]
-                                        ]
-                                       ))
+#predictions = network.predict(np.array([[0.76,45,2,0.802982129,9120,13,0,6,0,2],
+#                                        [0.2, 30, 0, 0.102982129, 29120, 1, 0, 2, 0, 2],
+#                                        [0.880370887, 43, 0, 0.461323764, 7523, 6, 0, 1, 0, 1],
+#                                        [0.224710924,55,0,0.057234801,8700,7,0,0,0,0],
+#                                        [1.135552064,41,2,0.845887215,7500,12,0,4,1,0]
+#                                        ]
+ #
+#                                       ))
+
+predictions = network.predict(csv_predict)
 # round predictions
 rounded = [round(x[0]) for x in predictions]
 print(predictions)
