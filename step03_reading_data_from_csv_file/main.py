@@ -5,6 +5,11 @@ import numpy as np
 from keras.utils.np_utils import to_categorical
 from tkinter import *
 
+seed = 7
+np.random.seed(seed)
+
+#http://machinelearningmastery.com/tutorial-first-neural-network-python-keras/
+
 csv_all_data = np.genfromtxt('data/cs-training.csv', delimiter=",")
 csv_predict = np.genfromtxt('data/cs-test.csv', delimiter=",")
 #print(csv[1])
@@ -17,29 +22,40 @@ all_test_data = csv_all_data[len(csv_all_data)-testsize:len(csv_all_data),:]
 
 train_labels = all_training_data[:,0] #slice the first column which are the labels
 train_data = all_training_data[:,np.arange(1,11)]
-train_labels = to_categorical(train_labels)
+#train_labels = to_categorical(train_labels)
 
 test_labels = all_test_data[:,0] #slice the first column which are the labels
 test_data = all_test_data[:,np.arange(1,11)]
-test_labels = to_categorical(test_labels)
+#test_labels = to_categorical(test_labels)
 
 
 network = Sequential()
-network.add(Dense(10, activation='relu', input_shape=(10,)))
-network.add(Dense(2, activation='softmax'))
+network.add(Dense(12, activation='relu', input_dim=10, kernel_initializer='uniform'))
+network.add(Dense(8, kernel_initializer='uniform', activation='relu'))
+network.add(Dense(1, kernel_initializer='uniform', activation='sigmoid'))
 
-network.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
+
+network.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 network.fit(train_data, train_labels, epochs=5, batch_size=128)
 
 test_loss, test_acc = network.evaluate(test_data, test_labels)
 
-print('test_acc:', test_acc)
-
-#prediction = network.predict(np.array([[0.76,45,2,0.802982129,9120,13,0,6,0,2]]))
-#print(prediction)
-
 #SeriousDlqin2yrs,RevolvingUtilizationOfUnsecuredLines,age,NumberOfTime30-59DaysPastDueNotWorse,DebtRatio,MonthlyIncome,NumberOfOpenCreditLinesAndLoans,NumberOfTimes90DaysLate,NumberRealEstateLoansOrLines,NumberOfTime60-89DaysPastDueNotWorse,NumberOfDependents
+
+predictions = network.predict(np.array([[0.76,45,2,0.802982129,9120,13,0,6,0,2],
+                                        [0.2, 30, 0, 0.102982129, 29120, 1, 0, 2, 0, 2],
+                                        [0.880370887, 43, 0, 0.461323764, 7523, 6, 0, 1, 0, 1],
+                                        [0.224710924,55,0,0.057234801,8700,7,0,0,0,0],
+                                        [1.135552064,41,2,0.845887215,7500,12,0,4,1,0]
+                                        ]
+                                       ))
+# round predictions
+rounded = [round(x[0]) for x in predictions]
+print(predictions)
+print(rounded)
+
+
 
 def show_entry_fields():
    f1 = float(e1.get())
@@ -93,8 +109,4 @@ e10.grid(row=9, column=1)
 
 Button(master, text='Quit', command=master.quit).grid(row=10, column=0, sticky=W, pady=4)
 Button(master, text="Serious Dlq in 2yrs?", command=show_entry_fields).grid(row=10, column=1, sticky=W, pady=4)
-
 mainloop( )
-
-
-
