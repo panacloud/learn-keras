@@ -21,11 +21,16 @@ deliquent_count = np.count_nonzero(csv_all_data[:,0] > 0) #count which are deliq
 print(deliquent_count)
 deliquent_rows = csv_all_data[csv_all_data[:,0] > 0]
 not_deliquent_rows = csv_all_data[csv_all_data[:,0] <= 0]
+print("deliquent_rows: ")
 print(len(deliquent_rows))
 print(len(not_deliquent_rows))
 selected_not_deliquent_rows = not_deliquent_rows[0:deliquent_count,:]
+print("selected_not_deliquent_rows: ")
 print(len(selected_not_deliquent_rows))
-all_training_data = deliquent_rows + selected_not_deliquent_rows
+all_training_data = np.concatenate((deliquent_rows, selected_not_deliquent_rows), axis=0)
+np.random.shuffle(all_training_data)
+print("all_training_data: ")
+print(len(all_training_data))
 
 
 testsize = 1000
