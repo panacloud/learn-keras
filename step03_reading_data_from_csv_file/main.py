@@ -17,20 +17,32 @@ csv_predict = np.genfromtxt('data/cs-test.csv', delimiter=",")
 #print(csv[1])
 csv_all_data = csv_all_data[1:-1,:] #remove first name row
 csv_all_data = csv_all_data[:,1:] #remove first index column
+deliquent_count = np.count_nonzero(csv_all_data[:,0] > 0) #count which are deliquent
+print(deliquent_count)
+deliquent_rows = csv_all_data[csv_all_data[:,0] > 0]
+not_deliquent_rows = csv_all_data[csv_all_data[:,0] <= 0]
+print(len(deliquent_rows))
+print(len(not_deliquent_rows))
+selected_not_deliquent_rows = not_deliquent_rows[0:deliquent_count,:]
+print(len(selected_not_deliquent_rows))
+all_training_data = deliquent_rows + selected_not_deliquent_rows
 
-testsize = 30000
-all_training_data = csv_all_data[0:len(csv_all_data)-testsize,:]
-all_test_data = csv_all_data[len(csv_all_data)-testsize:len(csv_all_data),:]
+
+testsize = 1000
+#all_training_data = all_training_data[0:len(csv_all_data)-testsize,:]
+#all_test_data = all_training_data[len(csv_all_data)-testsize:len(csv_all_data),:]
 
 train_labels = all_training_data[:,0] #slice the first column which are the labels
 train_data = all_training_data[:,np.arange(1,11)]
+print(len(train_labels))
 #train_labels = to_categorical(train_labels)
 
-test_labels = all_test_data[:,0] #slice the first column which are the labels
-test_data = all_test_data[:,np.arange(1,11)]
+#test_labels = all_test_data[:,0] #slice the first column which are the labels
+#test_data = all_test_data[:,np.arange(1,11)]
 #test_labels = to_categorical(test_labels)
 
 all_training_data[np.isnan(all_training_data)] = 0 #convert nan value to zero
+
 
 #print(all_training_data[6])
 
@@ -51,7 +63,9 @@ network.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy
 
 network.fit(train_data, train_labels, epochs=5, batch_size=128)
 
-test_loss, test_acc = network.evaluate(test_data, test_labels)
+test_loss, test_acc = network.evaluate(train_data, train_labels)
+print("test_acc: ")
+print(test_acc)
 
 #SeriousDlqin2yrs,RevolvingUtilizationOfUnsecuredLines,age,NumberOfTime30-59DaysPastDueNotWorse,DebtRatio,MonthlyIncome,NumberOfOpenCreditLinesAndLoans,NumberOfTimes90DaysLate,NumberRealEstateLoansOrLines,NumberOfTime60-89DaysPastDueNotWorse,NumberOfDependents
 
