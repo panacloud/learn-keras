@@ -11,3 +11,9 @@ How to resolved the unbalanced dataset problem:
 https://github.com/scikit-learn-contrib/imbalanced-learn
 
 http://contrib.scikit-learn.org/imbalanced-learn/
+
+
+Additional Reading:
+
+http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0117844
+
