@@ -15,5 +15,7 @@ http://contrib.scikit-learn.org/imbalanced-learn/
 
 Additional Reading:
 
+http://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/
+
 http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0117844
 
